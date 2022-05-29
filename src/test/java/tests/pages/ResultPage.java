@@ -35,12 +35,15 @@ public class ResultPage {
     }
 
     public void verifyHigherPrice(int price){
+        //clear the old resultList after receiving new price for test
         resultList.clear();
+        //while condition is true, verify each page and save each item with price that is higher than expected
         while (!this.next().getAttribute("class").contains("s-pagination-disabled")) {
             setResultListWithTheItemsThatHaveHigherPrice(price);
             this.next().click();
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         }
+        //verify price on the last page and save the item with price that is higher than expected
         if(this.next().getAttribute("class").contains("s-pagination-disabled")){
             setResultListWithTheItemsThatHaveHigherPrice(price);
         }
@@ -57,6 +60,7 @@ public class ResultPage {
         map = createThePriceList();
         for (int e = 0; e < map.size(); e++) {
             if (map.get(e) > price) {
+                //save price that is higher than expected and the link on it
                 resultList.put(map.get(e), findItemLink(e));
             }
         }
